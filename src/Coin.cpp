@@ -7,6 +7,10 @@ Coin::Coin(float x, float y)
     shape.setPosition({x, y});
 }
 
+void Coin::update(float deltaTime)
+{
+}
+
 void Coin::draw(sf::RenderWindow& window)
 {
     window.draw(shape);
