@@ -17,7 +17,8 @@ public:
     float getRadius() const;
 
 private:
-    sf::CircleShape shape;
+    sf::Texture texture;
+    sf::Sprite sprite;
     float speed;
 
     sf::Vector2u windowSize;
