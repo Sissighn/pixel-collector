@@ -35,13 +35,17 @@ void Player::handleInput(float deltaTime)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
     {
         sprite.move({-move, 0});
-        sprite.setScale({-0.65f, 0.65f});
+
+        auto scale = sprite.getScale();
+        sprite.setScale({-std::abs(scale.x), scale.y});
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
     {
         sprite.move({move, 0});
-        sprite.setScale({0.65f, 0.65f});
+
+        auto scale = sprite.getScale();
+        sprite.setScale({std::abs(scale.x), scale.y});
     }
 }
 
