@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Player.h"
+#include "Coin.h"
+#include <vector>
 
 class Game
 {
@@ -15,4 +17,7 @@ private:
 
     sf::RenderWindow window;
     Player player;
+
+    std::vector<Coin> coins;
+    int score;
 };
