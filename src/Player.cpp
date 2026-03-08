@@ -1,44 +1,49 @@
 #include "Player.h"
 #include <algorithm>
+#include <cmath>
 
 Player::Player()
+: texture("../assets/cat.png"),
+  sprite(texture)
 {
-    shape.setRadius(30.f);
-    shape.setFillColor(sf::Color::Green);
-    shape.setPosition({400,300});
+    sprite.setPosition({400,300});
 
-    speed = 0.3f;
+    texture.setSmooth(false);
+    sprite.setScale({0.65f, 0.65f});
+
+    speed = 90.f;
 }
 
 void Player::handleInput(float deltaTime)
 {
-    float move = speed * deltaTime * 300;
+    float move = speed * deltaTime;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
-        shape.move({0, -move});
+        sprite.move({0, -move});
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
-        shape.move({0, move});
+        sprite.move({0, move});
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
-        shape.move({-move, 0});
+        sprite.move({-move, 0});
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
-        shape.move({move, 0});
+        sprite.move({move, 0});
 }
 
 void Player::update(float deltaTime)
 {
-    auto pos = shape.getPosition();
-    float radius = shape.getRadius();
+    auto pos = sprite.getPosition();
 
-    float maxX = windowSize.x - radius * 2;
-    float maxY = windowSize.y - radius * 2;
+    auto bounds = sprite.getGlobalBounds();
+
+    float maxX = windowSize.x - bounds.size.x;
+    float maxY = windowSize.y - bounds.size.y;
 
     float clampedX = std::clamp(pos.x, 0.f, maxX);
     float clampedY = std::clamp(pos.y, 0.f, maxY);
 
-    shape.setPosition({clampedX, clampedY});
+    sprite.setPosition({clampedX, clampedY});
 }
 
 void Player::setWindowSize(sf::Vector2u size)
@@ -48,15 +53,15 @@ void Player::setWindowSize(sf::Vector2u size)
 
 void Player::draw(sf::RenderWindow& window)
 {
-    window.draw(shape);
+    window.draw(sprite);
 }
 
 sf::Vector2f Player::getPosition() const
 {
-    return shape.getPosition();
+    return sprite.getPosition();
 }
 
 float Player::getRadius() const
 {
-    return shape.getRadius();
+    return sprite.getGlobalBounds().size.x / 1.8f;
 }
