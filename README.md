@@ -63,6 +63,7 @@ The project will likely evolve over time as new systems are explored.
 
 ## Project Structure
 
+```bash
 src/
 ├── Entity
 ├── Player
@@ -71,6 +72,7 @@ src/
 └── main.cpp
 assets/
 └── sprites and fonts
+```
 
 The architecture is centered around a simple **Entity-based design**, where game objects share a common interface and are managed by the main game loop.
 
