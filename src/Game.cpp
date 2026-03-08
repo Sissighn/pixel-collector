@@ -4,6 +4,7 @@
 Game::Game() :
 window(sf::VideoMode({800,600}), "Tiny Collector")
 {
+    state = GameState::Menu;
     score = 0;
 
     player.setWindowSize(window.getSize());
@@ -38,11 +39,22 @@ void Game::processEvents()
         if (event->is<sf::Event::Closed>())
             window.close();
     }
+
+    if (state == GameState::Menu)
+    {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter))
+        {
+            state = GameState::Playing;
+        }
+    }
 }
 
 void Game::update()
 {
     deltaTime = clock.restart().asSeconds();
+
+    if (state != GameState::Playing)
+        return;
 
     player.handleInput(deltaTime);
     player.update(deltaTime);
@@ -61,7 +73,7 @@ void Game::update()
         float dx = playerPos.x - coinPos.x;
         float dy = playerPos.y - coinPos.y;
 
-        float distance = std::sqrt(dx*dx + dy*dy);
+        float distance = std::sqrt(dx * dx + dy * dy);
 
         if (distance < player.getRadius() + coin->getRadius())
         {
@@ -84,12 +96,28 @@ void Game::render()
 {
     window.clear();
 
-    player.draw(window);
+    if (state == GameState::Menu)
+    {
+        scoreText.setString("Press ENTER to start");
+        window.draw(scoreText);
+    }
+    else if (state == GameState::Playing)
+    {
+        player.draw(window);
 
-    for (auto& entity : entities)
-        entity->draw(window);
+        for (auto& entity : entities)
+        {
+            entity->draw(window);
+        }
 
-    window.draw(scoreText);
+        scoreText.setString("Score: " + std::to_string(score));
+        window.draw(scoreText);
+    }
+    else if (state == GameState::GameOver)
+    {
+        scoreText.setString("Game Over");
+        window.draw(scoreText);
+    }
 
     window.display();
 }
