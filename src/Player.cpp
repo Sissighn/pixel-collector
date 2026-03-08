@@ -9,19 +9,21 @@ Player::Player()
     speed = 0.3f;
 }
 
-void Player::handleInput()
+void Player::handleInput(float deltaTime)
 {
+    float move = speed * deltaTime * 300;
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
-        shape.move({0, -speed});
+        shape.move({0, -move});
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
-        shape.move({0, speed});
+        shape.move({0, move});
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
-        shape.move({-speed, 0});
+        shape.move({-move, 0});
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
-        shape.move({speed, 0});
+        shape.move({move, 0});
 }
 
 void Player::update()
