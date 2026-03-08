@@ -16,6 +16,8 @@ The game itself is intentionally minimal and serves mainly as a sandbox for lear
 
 ## Current Gameplay
 
+![Tiny Collector Gameplay](docs/screenshot.png)
+
 The player controls a pixel-art cat that collects coins on the screen.
 
 Features currently implemented:
