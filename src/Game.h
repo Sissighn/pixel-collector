@@ -15,10 +15,18 @@ public:
     void run();
 
 private:
+    enum class GameState
+    {
+        Menu,
+        Playing,
+        GameOver
+    };
+
     void processEvents();
     void update();
     void render();
 
+    GameState state;
     sf::RenderWindow window;
 
     Player player;
