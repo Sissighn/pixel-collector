@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <algorithm>
 
 Player::Player()
 {
@@ -28,6 +29,21 @@ void Player::handleInput(float deltaTime)
 
 void Player::update(float deltaTime)
 {
+    auto pos = shape.getPosition();
+    float radius = shape.getRadius();
+
+    float maxX = windowSize.x - radius * 2;
+    float maxY = windowSize.y - radius * 2;
+
+    float clampedX = std::clamp(pos.x, 0.f, maxX);
+    float clampedY = std::clamp(pos.y, 0.f, maxY);
+
+    shape.setPosition({clampedX, clampedY});
+}
+
+void Player::setWindowSize(sf::Vector2u size)
+{
+    windowSize = size;
 }
 
 void Player::draw(sf::RenderWindow& window)
