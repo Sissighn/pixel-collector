@@ -49,13 +49,20 @@ void Player::update(float deltaTime)
 {
     auto pos = sprite.getPosition();
 
-    auto bounds = sprite.getGlobalBounds();
+    auto bounds = sprite.getLocalBounds();
+    auto scale = sprite.getScale();
 
-    float maxX = windowSize.x - bounds.size.x;
-    float maxY = windowSize.y - bounds.size.y;
+    float width  = bounds.size.x * std::abs(scale.x);
+    float height = bounds.size.y * std::abs(scale.y);
 
-    float clampedX = std::clamp(pos.x, 0.f, maxX);
-    float clampedY = std::clamp(pos.y, 0.f, maxY);
+    float maxX = windowSize.x - width / 2.f;
+    float maxY = windowSize.y - height / 2.f;
+
+    float minX = width / 2.f;
+    float minY = height / 2.f;
+
+    float clampedX = std::clamp(pos.x, minX, maxX);
+    float clampedY = std::clamp(pos.y, minY, maxY);
 
     sprite.setPosition({clampedX, clampedY});
 }
