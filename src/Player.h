@@ -6,7 +6,7 @@ class Player
 public:
     Player();
 
-    void handleInput();
+    void handleInput(float deltaTime);
     void update();
     void draw(sf::RenderWindow & window);
 
