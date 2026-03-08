@@ -1,19 +1,22 @@
 #include "Game.h"
-#include <cstdlib>
 #include <cmath>
 
 Game::Game() :
 window(sf::VideoMode({800,600}), "Tiny Collector")
 {
-    
     score = 0;
 
-    coins.push_back(Coin(200,200));
-
     font.openFromFile("../assets/PixelifySans-VariableFont_wght.ttf");
+
     scoreText.setCharacterSize(24);
     scoreText.setFillColor(sf::Color::White);
     scoreText.setPosition({10,10});
+
+    rng = std::mt19937(std::random_device{}());
+    xDist = std::uniform_real_distribution<float>(50,750);
+    yDist = std::uniform_real_distribution<float>(50,550);
+
+    entities.push_back(std::make_unique<Coin>(200,200));
 }
 
 void Game::run()
@@ -40,33 +43,39 @@ void Game::update()
     deltaTime = clock.restart().asSeconds();
 
     player.handleInput(deltaTime);
-    player.update();
+    player.update(deltaTime);
 
     auto playerPos = player.getPosition();
 
-    for (size_t i = 0; i < coins.size(); i++)
+    for (size_t i = 0; i < entities.size(); i++)
     {
-        auto coinPos = coins[i].getPosition();
+        Coin* coin = dynamic_cast<Coin*>(entities[i].get());
+
+        if (!coin)
+            continue;
+
+        auto coinPos = coin->getPosition();
 
         float dx = playerPos.x - coinPos.x;
         float dy = playerPos.y - coinPos.y;
 
         float distance = std::sqrt(dx*dx + dy*dy);
 
-        if (distance < player.getRadius() + coins[i].getRadius())
+        if (distance < player.getRadius() + coin->getRadius())
         {
             score++;
-            coins.erase(coins.begin() + i);
 
-            float x = rand() % 700;
-            float y = rand() % 500;
+            entities.erase(entities.begin() + i);
 
-            coins.push_back(Coin(x,y));
-            scoreText.setString("Score: " + std::to_string(score));
+            entities.push_back(
+                std::make_unique<Coin>(xDist(rng), yDist(rng))
+            );
 
             break;
         }
     }
+
+    scoreText.setString("Score: " + std::to_string(score));
 }
 
 void Game::render()
@@ -75,10 +84,9 @@ void Game::render()
 
     player.draw(window);
 
-    for (auto& coin : coins)
-        coin.draw(window);
+    for (auto& entity : entities)
+        entity->draw(window);
 
-    scoreText.setString("Score: " + std::to_string(score));
     window.draw(scoreText);
 
     window.display();
