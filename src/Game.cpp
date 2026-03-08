@@ -6,6 +6,8 @@ window(sf::VideoMode({800,600}), "Tiny Collector")
 {
     score = 0;
 
+    player.setWindowSize(window.getSize());
+
     font.openFromFile("../assets/PixelifySans-VariableFont_wght.ttf");
 
     scoreText.setCharacterSize(24);
