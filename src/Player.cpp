@@ -6,9 +6,13 @@ Player::Player()
 : texture("../assets/cat.png"),
   sprite(texture)
 {
+    texture.setSmooth(false);
+
+    auto bounds = sprite.getLocalBounds();
+    sprite.setOrigin({bounds.size.x / 2.f, bounds.size.y / 2.f});
+
     sprite.setPosition({400,300});
 
-    texture.setSmooth(false);
     sprite.setScale({0.65f, 0.65f});
 
     speed = 90.f;
@@ -19,16 +23,26 @@ void Player::handleInput(float deltaTime)
     float move = speed * deltaTime;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+    {
         sprite.move({0, -move});
+    }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
+    {
         sprite.move({0, move});
+    }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+    {
         sprite.move({-move, 0});
+        sprite.setScale({-0.65f, 0.65f});
+    }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+    {
         sprite.move({move, 0});
+        sprite.setScale({0.65f, 0.65f});
+    }
 }
 
 void Player::update(float deltaTime)
