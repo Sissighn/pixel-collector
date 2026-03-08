@@ -1,9 +1,12 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <vector>
+#include <memory>
+#include <random>
+
+#include "Entity.h"
 #include "Player.h"
 #include "Coin.h"
-#include <vector>
-#include <random>
 
 class Game
 {
@@ -17,9 +20,11 @@ private:
     void render();
 
     sf::RenderWindow window;
+
     Player player;
 
-    std::vector<Coin> coins;
+    std::vector<std::unique_ptr<Entity>> entities;
+
     int score;
 
     sf::Font font;
