@@ -1,12 +1,19 @@
 #include "Game.h"
 #include <cstdlib>
+#include <cmath>
 
 Game::Game() :
 window(sf::VideoMode({800,600}), "Tiny Collector")
 {
+    
     score = 0;
 
     coins.push_back(Coin(200,200));
+
+    font.openFromFile("../assets/PixelifySans-VariableFont_wght.ttf");
+    scoreText.setCharacterSize(24);
+    scoreText.setFillColor(sf::Color::White);
+    scoreText.setPosition({10,10});
 }
 
 void Game::run()
@@ -30,7 +37,9 @@ void Game::processEvents()
 
 void Game::update()
 {
-    player.handleInput();
+    deltaTime = clock.restart().asSeconds();
+
+    player.handleInput(deltaTime);
     player.update();
 
     auto playerPos = player.getPosition();
@@ -53,6 +62,7 @@ void Game::update()
             float y = rand() % 500;
 
             coins.push_back(Coin(x,y));
+            scoreText.setString("Score: " + std::to_string(score));
 
             break;
         }
@@ -67,6 +77,9 @@ void Game::render()
 
     for (auto& coin : coins)
         coin.draw(window);
+
+    scoreText.setString("Score: " + std::to_string(score));
+    window.draw(scoreText);
 
     window.display();
 }
