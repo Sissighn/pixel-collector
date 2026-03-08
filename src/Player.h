@@ -1,14 +1,15 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Entity.h"
 
-class Player
+class Player : public Entity
 {
 public:
     Player();
 
     void handleInput(float deltaTime);
-    void update();
-    void draw(sf::RenderWindow & window);
+    void update(float deltaTime) override;
+    void draw(sf::RenderWindow & window) override;
 
     sf::Vector2f getPosition() const;
     float getRadius() const;

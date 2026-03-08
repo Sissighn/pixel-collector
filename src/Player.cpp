@@ -26,7 +26,7 @@ void Player::handleInput(float deltaTime)
         shape.move({move, 0});
 }
 
-void Player::update()
+void Player::update(float deltaTime)
 {
 }
 
